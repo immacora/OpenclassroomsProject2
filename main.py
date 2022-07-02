@@ -1,16 +1,52 @@
-# This is a sample Python script.
+import requests
+from bs4 import BeautifulSoup
+import function
+import csv
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+
+# Initialise la matrice des data
+csv_list = [['product_page_url'],
+            ['universal_product_code'],
+            ['titre'],
+            ['price_including_tax'],
+            ['price_excluding_tax'],
+            ['number_available'],
+            ['product_description'],
+            ['category'],
+            ['review_rating'],
+            ['image_url'],]
+
+##Appel de la fonction qui liste les catégories du site Web Books to scrape##
+category_list = function.category_list('http://books.toscrape.com/catalogue/category/books_1/index.html')
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+#Récupère l' url d'une catégorie
+for i in range(len(category_list)):
+    url_category = category_list[i]
+    response = requests.get(url_category)
+    #Si l'url est valide
+    if response.ok:
+        ##Appel de la fonction qui liste les livres d'une catégorie##
+        url_books_category = function.books_category(url_category)
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+        # Pour chaque livre d'une catégorie
+        for i in range(len(url_books_category)):
+            url_book_category = url_books_category[i]
+            response = requests.get(url_book_category)
+            # Si l'url du livre est valide
+            if response.ok:
+                ##Appel de la fonction qui récupère la liste des data d'un livre##
+                list_data_page = function.book_page_data(url_book_category)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-print(5)
+                # Pour chaque data dans la liste
+                for i in range(len(list_data_page)):
+                    list_data_ligne = list_data_page[i]
+                    #Ajoute la ligne de data au tableau de listes
+                    csv_list[i].append(list_data_ligne)
+
+
+with open('donnees.csv', 'w', encoding='utf-8') as file:
+    writer = csv.writer(file, delimiter='\t')
+    for row in csv_list:
+        for data in row:
+            writer.writerow(data)
