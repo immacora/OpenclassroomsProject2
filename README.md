@@ -5,6 +5,7 @@ Programme (scraper) développé en Python pour extraire des informations sur les
 
 Prérequis :
  - Python 3.10.5 / pip
+ - PyCharm
  - Requests
  - Beautiful Soup
  - lxml
