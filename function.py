@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 
 ##Retourne la liste des catégories du site Web Books to scrape##
@@ -24,33 +25,51 @@ def category_list(url):
 def books_category(url):
     response = requests.get(url)
     url_books_category = []
+
     # Si l'url est valide
     if response.ok:
         soup = BeautifulSoup(response.content, 'lxml')
         next_btn = soup.find('li', class_='next')
-        links = soup.find('ol').findAll('a')
 
-        # faire une boucle qui refait la soupe tant que next-btn existe
-        #while next_btn:
-        """<div>
-                <ul class="pager">           
-                        <li class="previous"><a href="page-2.html">previous</a></li>         
-                    <li class="current">Page 3 of 4</li>       
-                        <li class="next"><a href="page-4.html">next</a></li>
-                </ul>
-            </div>"""
+        # Si le bouton next n'existe pas
+        if next_btn is None:
+            links = soup.find('ol').findAll('a')
+            print(links)
+            # Récupérer tous les liens 'a' de la liste 'ol'
+            for a in links:
+                link = a.get('href')
+                link = link.replace('../../..', 'http://books.toscrape.com/catalogue')
+                # trier les doublons
+                if link not in url_books_category:
+                    url_books_category.append(link)
+            return url_books_category
 
+        # Si le bouton next existe
+        else:
+            url_pages_categorie = []
+            nb_pages = soup.find('li', class_='current').text
+            nb_pages = int(re.search('of (.+?)', nb_pages).group(1))
 
-        # Récupérer tous les liens 'a' de la liste 'ol'
-        for a in links:
-            link = a.get('href')
-            link = link.replace('../../..', 'http://books.toscrape.com/catalogue')
-            'trier les doublons'
-            if link not in url_books_category:
-                url_books_category.append(link)
-            # time.sleep(1)
+            print(nb_pages)
+            print(url)
+            # Créer la liste des url des pages de la catégorie
+            for i in range(nb_pages):
+                url_page_categorie = url.replace('index', "page-" + str(i + 1))
+                response = requests.get(url_page_categorie)
+                # Si l'url est valide
+                if response.ok:
+                    soup = BeautifulSoup(response.content, 'lxml')
+                    links = soup.find('ol').findAll('a')
+                    # Récupérer tous les liens 'a' de la liste 'ol'
+                    for a in links:
+                        link = a.get('href')
+                        link = link.replace('../../..', 'http://books.toscrape.com/catalogue')
+                        #trier les doublons
+                        if link not in url_books_category:
+                            url_books_category.append(link)
 
-        return url_books_category
+            return url_books_category
+
     else:
         return response
 
@@ -87,7 +106,7 @@ def book_page_data(url):
             [review_rating],
             [image_url],
         ]
-        
+
         return list_page_data
 
     else:

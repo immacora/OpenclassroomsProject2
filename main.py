@@ -46,7 +46,8 @@ for i in range(len(category_list)):
 
 
 with open('donnees.csv', 'w', encoding='utf-8') as file:
-    writer = csv.writer(file, delimiter='\t')
     for row in csv_list:
+        writer = csv.writer(file, delimiter='\t')
         for data in row:
             writer.writerow(data)
+
