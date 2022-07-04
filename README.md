@@ -22,5 +22,5 @@ Installer les packges depuis le fichier requirements
 
 Lancer le programme
 
-L'exécution du programme peut durer plusieurs minutes.
+L'exécution du programme dure environ 10 minutes.
 Une fois terminé, un fichier csv sera créé pour chaque catégorie de livre dans le dossier du projet ainsi qu'un répertoire contenant les fichiers images téléchargés des livres.
