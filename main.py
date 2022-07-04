@@ -4,23 +4,11 @@ import function
 import csv
 
 
-# Initialise la matrice des data
-csv_list = [['product_page_url'],
-            ['universal_product_code'],
-            ['titre'],
-            ['price_including_tax'],
-            ['price_excluding_tax'],
-            ['number_available'],
-            ['product_description'],
-            ['category'],
-            ['review_rating'],
-            ['image_url'],]
-
 ##Appel de la fonction qui liste les catégories du site Web Books to scrape##
 category_list = function.category_list('http://books.toscrape.com/catalogue/category/books_1/index.html')
 
 
-#Récupère l' url d'une catégorie
+#Pour chaque catégorie
 for i in range(len(category_list)):
     url_category = category_list[i]
     response = requests.get(url_category)
@@ -29,25 +17,24 @@ for i in range(len(category_list)):
         ##Appel de la fonction qui liste les livres d'une catégorie##
         url_books_category = function.books_category(url_category)
 
+        # Initialise la liste des livres de la catégorie
+        csv_books_category = []
         # Pour chaque livre d'une catégorie
         for i in range(len(url_books_category)):
             url_book_category = url_books_category[i]
             response = requests.get(url_book_category)
             # Si l'url du livre est valide
             if response.ok:
-                ##Appel de la fonction qui récupère la liste des data d'un livre##
-                list_data_page = function.book_page_data(url_book_category)
-
-                # Pour chaque data dans la liste
-                for i in range(len(list_data_page)):
-                    list_data_ligne = list_data_page[i]
-                    #Ajoute la ligne de data au tableau de listes
-                    csv_list[i].append(list_data_ligne)
-
-
-with open('donnees.csv', 'w', encoding='utf-8') as file:
-    for row in csv_list:
-        writer = csv.writer(file, delimiter='\t')
-        for data in row:
-            writer.writerow(data)
-
+                ##Appel de la fonction qui récupère le dictionnaire de data d'un livre dans une liste de dictionnaires##
+                dico_data_book = function.book_page_data(url_book_category)
+                csv_books_category.append(dico_data_book)
+                csv_name = dico_data_book['category']
+            else:
+                print(response)
+    #Crée le csv au nom de la catégorie
+    csv_name = dico_data_book['category']
+    keys = csv_books_category[0].keys()
+    with open(csv_name, 'w', encoding='utf-8', newline= '') as csvfile:
+        dict_writer = csv.DictWriter(csvfile, keys, delimiter= '\t')
+        dict_writer.writeheader()
+        dict_writer.writerows(csv_books_category)
