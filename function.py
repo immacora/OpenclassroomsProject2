@@ -21,7 +21,7 @@ def category_list(url):
         return response
 
 
-##Récupérer les href de tous les livres d'une catégorie##A FINIR
+##Récupérer les href de tous les livres d'une catégorie##
 def books_category(url):
     response = requests.get(url)
     url_books_category = []
@@ -30,11 +30,11 @@ def books_category(url):
     if response.ok:
         soup = BeautifulSoup(response.content, 'lxml')
         next_btn = soup.find('li', class_='next')
+        category = soup.find('li', class_='active').text
 
         # Si le bouton next n'existe pas
         if next_btn is None:
             links = soup.find('ol').findAll('a')
-            print(links)
             # Récupérer tous les liens 'a' de la liste 'ol'
             for a in links:
                 link = a.get('href')
@@ -46,12 +46,9 @@ def books_category(url):
 
         # Si le bouton next existe
         else:
-            url_pages_categorie = []
             nb_pages = soup.find('li', class_='current').text
             nb_pages = int(re.search('of (.+?)', nb_pages).group(1))
 
-            print(nb_pages)
-            print(url)
             # Créer la liste des url des pages de la catégorie
             for i in range(nb_pages):
                 url_page_categorie = url.replace('index', "page-" + str(i + 1))
@@ -64,7 +61,7 @@ def books_category(url):
                     for a in links:
                         link = a.get('href')
                         link = link.replace('../../..', 'http://books.toscrape.com/catalogue')
-                        #trier les doublons
+                        # trier les doublons
                         if link not in url_books_category:
                             url_books_category.append(link)
 
@@ -73,6 +70,7 @@ def books_category(url):
     else:
         return response
 
+
 ##Retourne les données formatées de la page dans une liste de listes##
 def book_page_data(url):
     response = requests.get(url)
@@ -80,6 +78,7 @@ def book_page_data(url):
     # Si l'url est valide
     if response.ok:
         soup = BeautifulSoup(response.content, 'lxml')
+        dico_page_data = {'': []}
 
         product_page_url = url
         titre = soup.find('h1').text
@@ -94,20 +93,18 @@ def book_page_data(url):
         price_excluding_tax = table[3].text
         number_available = table[5].text.removeprefix('In stock (').removesuffix(' available)')
 
-        list_page_data = [
-            [product_page_url],
-            [universal_product_code],
-            [titre],
-            [price_including_tax],
-            [price_excluding_tax],
-            [number_available],
-            [product_description],
-            [category],
-            [review_rating],
-            [image_url],
-        ]
+        dico_page_data = {'titre': titre,
+                          'product_page_url': product_page_url,
+                          'universal_product_code': universal_product_code,
+                          'price_including_tax': price_including_tax,
+                          'price_excluding_tax': price_excluding_tax,
+                          'number_available': number_available,
+                          'product_description': product_description,
+                          'category': category,
+                          'review_rating': review_rating,
+                          'image_url': image_url}
 
-        return list_page_data
+        return dico_page_data
 
     else:
         return response
