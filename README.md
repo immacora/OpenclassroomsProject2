@@ -8,6 +8,7 @@ Prérequis :
  - PyCharm
  - Requests
  - Beautiful Soup
+ - re
  - lxml
  - csv
 
@@ -18,9 +19,9 @@ Télécharger les fichiers du projet dans l'IDE PyCharm :
   - environment Virtualenv
   - Base interpreter Python310
 
-Installer les packges depuis le fichier requirements
+Installer les packages depuis le fichier requirements
 
 Lancer le programme
 
-L'exécution du programme peut durer plusieurs minutes.
-Une fois terminé, un fichier csv sera créé pour chaque catégorie de livre dans le dossier du projet ainsi qu'un répertoire contenant les fichiers images téléchargés des livres.
+L'exécution du programme dure environ 25 minutes.
+Une fois terminé, un fichier csv sera créé pour chaque catégorie de livre dans le dossier data du projet. Le répertoire data contient le répertoire img des fichiers images téléchargés des livres.
