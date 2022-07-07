@@ -15,13 +15,14 @@ Prérequis :
 
 Pour utiliser le programme :
 
-Télécharger les fichiers du projet dans l'IDE PyCharm : 
-  - environment Virtualenv
+Assurez-vous d'avoir installé la version 3.10.5 de Python
+Téléchargez les fichiers du projet dans l'IDE PyCharm : 
+  - Environment Virtualenv
   - Base interpreter Python310
 
-Installer les packages depuis le fichier requirements
+Installez les packages depuis le fichier requirements
 
-Lancer le programme
+Lancez le programme
 
 L'exécution du programme dure environ 25 minutes.
 Une fois terminé, un fichier csv sera créé pour chaque catégorie de livre dans le dossier data du projet. Le répertoire data contient le répertoire img des fichiers images téléchargés des livres.
