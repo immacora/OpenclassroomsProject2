@@ -4,7 +4,7 @@ import function
 import csv
 import time
 
-##Appel de la fonction qui liste les catégories du site Web Books to scrape##
+# Appel de la fonction qui liste les catégories du site Web Books to scrape
 category_list = function.category_list('http://books.toscrape.com/catalogue/category/books_1/index.html')
 
 # Crée les dossiers data et img
@@ -16,7 +16,7 @@ for i in range(len(category_list)):
     url_category = category_list[i]
     response = requests.get(url_category)
     # Attendre 0.5 secondes
-    # time.sleep(0.5)
+    time.sleep(0.5)
     # Si l'url est valide
     if response.ok:
         # Appel de la fonction qui liste les livres d'une catégorie#
@@ -28,7 +28,7 @@ for i in range(len(category_list)):
             response = requests.get(url_book_category)
             # Si l'url du livre est valide
             if response.ok:
-                # Appel de la fonction qui récupère le dictionnaire de data d'un livre dans une liste de dictionnaires##
+                # Appel de la fonction qui récupère le dictionnaire de data d'un livre dans une liste de dictionnaires
                 dico_data_book = function.book_page_data(url_book_category)
                 csv_books_category.append(dico_data_book)
                 csv_name = dico_data_book['category']
