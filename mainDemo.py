@@ -2,16 +2,14 @@ import os
 import requests
 import function
 import csv
-import time
 
-# Appel de la fonction qui liste les catégories du site Web Books to scrape
-category_list = function.category_list('http://books.toscrape.com/catalogue/category/books_1/index.html')
+# Choix de 2 catégories (paginée et non paginée) pour la démo
+category_list = ['http://books.toscrape.com/catalogue/category/books/health_47/index.html', 'http://books.toscrape.com/catalogue/category/books/fiction_10/index.html']
 
 # Indications utilisateur
-print('Début du programme')
-print('Nombre de catégories : '+ str(len(category_list)))
-print('Le programme dure environ 15mn, merci de patienter...')
-
+print('Début de la démo du programme')
+print('Nombre de catégories pour la démo : ' + str(len(category_list)))
+print('Le programme dure 1 à 2mn, merci de patienter...')
 
 # Crée les dossiers data et img
 if not os.path.exists('data/img'):
@@ -21,8 +19,6 @@ if not os.path.exists('data/img'):
 for i in range(len(category_list)):
     url_category = category_list[i]
     response = requests.get(url_category)
-    # Attendre 0.5 secondes
-    time.sleep(0.5)
     # Si l'url est valide
     if response.ok:
         # Appel de la fonction qui liste les livres d'une catégorie#

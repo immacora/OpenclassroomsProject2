@@ -25,7 +25,7 @@ Téléchargez les fichiers du projet dans l'IDE PyCharm via VCS et vérifiez les
   - Environment Virtualenv
   - Base interpreter Python310
   - Fichier requirements
-  - Vérifier l'import et lancez le programme depuis le main
+  - Vérifier l'import et lancez le programme main.py 
 
 
 Installation via le terminal pour Windows :
@@ -45,3 +45,4 @@ Une fois terminé, un fichier csv sera créé pour chaque catégorie de livre da
 Le répertoire data contient le répertoire img des fichiers images téléchargés des livres.
 Les images sont nommées par leur Universal Product Code, identifiant unique qui permet de retrouver le livre dans les csv des data mais aussi sur le web.
 
+Pour exécuter une démo (Exemple de 2 catégories : 1 paginée, 1 non paginée), exécuter le programme : python mainDemo.py
