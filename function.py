@@ -100,7 +100,7 @@ def book_page_data(url):
                           'review_rating': review_rating,
                           'image_url': image_url}
         # Télécharge les jpg des livres
-        img_data = requests.get(url).content
+        img_data = requests.get(image_url).content
         with open(os.path.join('data/img/') + universal_product_code + '.jpg', 'wb') as handler:
             handler.write(img_data)
 
