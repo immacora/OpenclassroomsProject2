@@ -80,14 +80,14 @@ def book_page_data(url):
         # dico_page_data = {'': []}
         product_page_url = url
         titre = soup.find('h1').text
-        product_description = soup.select_one('article > p').text.replace(' ...more', '')
+        product_description = soup.select_one('article > p').text.replace('\N{FIGURE DASH}', '-')
         category = soup.select_one('li:nth-of-type(3)').find('a').text
         review_rating = soup.find('p', class_='star-rating').get('class').pop()
         image_url = soup.find('img').get('src').replace('../..', 'http://books.toscrape.com')
         table = soup.find_all('td')
         universal_product_code = table[0].text
-        price_including_tax = table[2].text
-        price_excluding_tax = table[3].text
+        price_including_tax = table[2].text.replace('£', '')
+        price_excluding_tax = table[3].text.replace('£', '')
         number_available = table[5].text.removeprefix('In stock (').removesuffix(' available)')
         dico_page_data = {'titre': titre,
                           'product_page_url': product_page_url,
