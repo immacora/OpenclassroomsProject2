@@ -11,6 +11,7 @@ Prérequis :
  - re
  - lxml
  - csv
+ - unidecode
 
 
 Pour utiliser le programme :
