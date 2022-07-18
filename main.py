@@ -40,7 +40,7 @@ for i in range(len(category_list)):
                 csv_name = dico_data_book['category']
                 # Crée le csv au nom de la catégorie
                 keys = csv_books_category[0].keys()
-                with open(os.path.join('data/') + csv_name + '.csv', 'w', encoding='ANSI', newline='') as csvfile:
+                with open(os.path.join('data/') + csv_name + '.csv', 'w', encoding='utf-8', newline='') as csvfile:
                     dict_writer = csv.DictWriter(csvfile, keys, delimiter=';')
                     dict_writer.writeheader()
                     dict_writer.writerows(csv_books_category)

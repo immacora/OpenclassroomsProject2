@@ -2,6 +2,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import re
+import unidecode
 
 
 # Retourne la liste des catégories du site Web Books to scrape
@@ -80,7 +81,8 @@ def book_page_data(url):
         # dico_page_data = {'': []}
         product_page_url = url
         titre = soup.find('h1').text
-        product_description = soup.select_one('article > p').text.replace('\N{FIGURE DASH}', '-')
+        product_description_unicode = soup.select_one('article > p').text
+        product_description = unidecode.unidecode(product_description_unicode)
         category = soup.select_one('li:nth-of-type(3)').find('a').text
         review_rating = soup.find('p', class_='star-rating').get('class').pop()
         image_url = soup.find('img').get('src').replace('../..', 'http://books.toscrape.com')
